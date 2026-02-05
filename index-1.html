@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đếm Ngược Tết Bính Ngọ 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #FF6347 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transform: translateZ(0);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Fireworks Background */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: firework-explode 2s ease-out infinite;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
+        @keyframes firework-explode {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Floating Lanterns */
+        .lantern {
+            position: absolute;
+            font-size: 40px;
+            animation: float-lantern 15s infinite ease-in-out;
+            opacity: 0.8;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
+        @keyframes float-lantern {
+            0%, 100% {
+                transform: translate3d(0, 120vh, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate3d(100px, -120px, 0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Gold Particles */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: particle-fall 8s infinite linear;
+            opacity: 0.7;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
+        @keyframes particle-fall {
+            0% {
+                transform: translate3d(0, -20px, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate3d(0, 120vh, 0) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            max-width: 90%;
+            animation: container-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes container-glow {
+            0%, 100% {
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        /* Decorative Elements */
+        .flower {
+            font-size: 60px;
+            display: inline-block;
+            animation: flower-sway 3s ease-in-out infinite;
+        }
+
+        @keyframes flower-sway {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* Title */
+        .title {
+            color: #FFD700;
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 
+                3px 3px 0 #8B0000,
+                -1px -1px 0 #8B0000,
+                1px -1px 0 #8B0000,
+                -1px 1px 0 #8B0000,
+                0 0 20px rgba(255, 215, 0, 0.8);
+            animation: title-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes title-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            color: #FFF;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .year {
+            color: #FFD700;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .time-unit {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.25), rgba(255, 140, 0, 0.25));
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.6);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .time-unit:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .time-value {
+            font-size: 52px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin-bottom: 8px;
+        }
+
+        .time-label {
+            font-size: 18px;
+            color: #FFF;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Message */
+        .message {
+            color: #FFF;
+            font-size: 22px;
+            margin-top: 30px;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .blessing {
+            color: #FFD700;
+            font-size: 20px;
+            margin-top: 20px;
+            font-style: italic;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        .signature {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            margin-top: 25px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 32px;
+            }
+            .subtitle {
+                font-size: 20px;
+            }
+            .year {
+                font-size: 26px;
+            }
+            .time-value {
+                font-size: 38px;
+            }
+            .time-label {
+                font-size: 14px;
+            }
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .message {
+                font-size: 18px;
+            }
+            .flower {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+            .title {
+                font-size: 26px;
+            }
+            .subtitle {
+                font-size: 16px;
+            }
+            .year {
+                font-size: 20px;
+            }
+            .time-value {
+                font-size: 32px;
+            }
+            .time-label {
+                font-size: 12px;
+            }
+            .message {
+                font-size: 16px;
+            }
+            .blessing {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fireworks Container -->
+    <div class="fireworks" id="fireworks"></div>
+
+    <!-- Floating Lanterns -->
+    <div id="lanterns"></div>
+
+    <!-- Gold Particles -->
+    <div id="particles"></div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="flower">🌸</div>
+        <div class="flower">🏮</div>
+        <div class="flower">🌸</div>
+        
+        <h1 class="title">CHÚC MỪNG NĂM MỚI</h1>
+        <p class="subtitle">Tết Nguyên Đán</p>
+        <p class="year">🐴 BÍNH NGỌ 2026 🐴</p>
+
+        <div class="countdown">
+            <div class="time-unit">
+                <div class="time-value" id="days">00</div>
+                <div class="time-label">Ngày</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">Giờ</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">Phút</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">Giây</div>
+            </div>
+        </div>
+
+        <p class="message">
+            🎊 Chúc quý vị và gia đình<br>
+            An khang thịnh vượng - Vạn sự như ý 🎊
+        </p>
+        <p class="blessing">
+            ✨ Phát tài - Phát lộc - Năm mới hanh thông ✨
+        </p>
+
+        <p class="signature">by Tùng Vu</p>
+
+        <div class="flower">🧧</div>
+        <div class="flower">🎆</div>
+        <div class="flower">🧧</div>
+    </div>
+
+    <script>
+        // Countdown Timer
+        const tetDate = new Date('2026-02-17T00:00:00+07:00').getTime(); // Mùng 1 Tết Bính Ngọ 2026
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = tetDate - now;
+
+            if (distance < 0) {
+                document.querySelector('.title').textContent = '🎉 CHÚC MỪNG NĂM MỚI 🎉';
+                document.querySelector('.subtitle').textContent = 'Tết Bính Ngọ đã đến!';
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Generate Fireworks
+        const fireworksContainer = document.getElementById('fireworks');
+        function createFirework() {
+            const colors = ['#FFD700', '#FF6347', '#FF4500', '#FFA500', '#FFFF00', '#FF69B4'];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+
+            for (let i = 0; i < 20; i++) { // Reduced from 30 to 20
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.PI * 2 * i) / 20; // Adjusted
+                const velocity = 50 + Math.random() * 80; // Reduced spread
+                firework.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                firework.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                
+                fireworksContainer.appendChild(firework);
+
+                setTimeout(() => firework.remove(), 2000);
+            }
+        }
+
+        setInterval(createFirework, 2500); // Increased interval from 2000 to 2500
+
+        // Generate Floating Lanterns
+        const lanternsContainer = document.getElementById('lanterns');
+        function createLantern() {
+            const lantern = document.createElement('div');
+            lantern.className = 'lantern';
+            lantern.textContent = '🏮';
+            lantern.style.left = Math.random() * 100 + '%';
+            lantern.style.animationDelay = Math.random() * 5 + 's';
+            lantern.style.animationDuration = (15 + Math.random() * 10) + 's';
+            lanternsContainer.appendChild(lantern);
+
+            setTimeout(() => lantern.remove(), 25000);
+        }
+
+        setInterval(createLantern, 4000); // Increased from 3000
+        for (let i = 0; i < 3; i++) { // Reduced from 5 to 3
+            setTimeout(createLantern, i * 800);
+        }
+
+        // Generate Gold Particles
+        const particlesContainer = document.getElementById('particles');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animationDuration = (8 + Math.random() * 4) + 's';
+            particlesContainer.appendChild(particle);
+
+            setTimeout(() => particle.remove(), 12000);
+        }
+
+        setInterval(createParticle, 400); // Increased from 300
+        for (let i = 0; i < 12; i++) { // Reduced from 20 to 12
+            setTimeout(createParticle, i * 200);
+        }
+    </script>
+</body>
+</html>
